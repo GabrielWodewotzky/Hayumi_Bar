@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  --color-sumi: #0e0c0b;
-  --color-surface: #1a1614;
+  --color-sumi: #0d0b0a;
+  --color-surface: #14100e;
   --color-washi: #f3efe8;
   --color-shu: #e2401f;
   --color-ouro: #ffb300;
-  --font-display: var(--font-spartan), system-ui, sans-serif;
+  --font-display: var(--font-mincho), "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif CJK JP", serif;
   --font-sans: var(--font-figtree), system-ui, sans-serif;
   --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
 }
@@ -14,7 +14,144 @@
 html { scroll-behavior: smooth; color-scheme: dark; }
 body { background: var(--color-sumi); color: var(--color-washi); }
 
+/* ---------- hero: HAY [temaki] UMI ---------- */
+.hero-root {
+  --hh: min(calc(100dvh - 5.5rem), 54rem); /* altura útil do banner */
+  --s: min(100vw, var(--hh));
+  position: relative;
+  height: max(var(--hh), 540px);
+  overflow: hidden;
+  background: var(--color-sumi);
+}
+
+/* ondas seigaiha: "umi" é mar em japonês */
+.hero-waves {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 48%;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2780%27%20height=%2740%27%20viewBox=%270%200%2080%2040%27%3E%3Cg%20fill=%27%2314100e%27%20stroke=%27%23e2401f%27%20stroke-opacity=%27.32%27%20stroke-width=%271.4%27%3E%3Ccircle%20cx=%2740%27%20cy=%27-20%27%20r=%2738%27/%3E%3Ccircle%20cx=%2740%27%20cy=%27-20%27%20r=%2730%27/%3E%3Ccircle%20cx=%2740%27%20cy=%27-20%27%20r=%2722%27/%3E%3Ccircle%20cx=%2740%27%20cy=%27-20%27%20r=%2714%27/%3E%3Ccircle%20cx=%2740%27%20cy=%27-20%27%20r=%276%27/%3E%3Ccircle%20cx=%270%27%20cy=%270%27%20r=%2738%27/%3E%3Ccircle%20cx=%270%27%20cy=%270%27%20r=%2730%27/%3E%3Ccircle%20cx=%270%27%20cy=%270%27%20r=%2722%27/%3E%3Ccircle%20cx=%270%27%20cy=%270%27%20r=%2714%27/%3E%3Ccircle%20cx=%270%27%20cy=%270%27%20r=%276%27/%3E%3Ccircle%20cx=%2780%27%20cy=%270%27%20r=%2738%27/%3E%3Ccircle%20cx=%2780%27%20cy=%270%27%20r=%2730%27/%3E%3Ccircle%20cx=%2780%27%20cy=%270%27%20r=%2722%27/%3E%3Ccircle%20cx=%2780%27%20cy=%270%27%20r=%2714%27/%3E%3Ccircle%20cx=%2780%27%20cy=%270%27%20r=%276%27/%3E%3Ccircle%20cx=%2740%27%20cy=%2720%27%20r=%2738%27/%3E%3Ccircle%20cx=%2740%27%20cy=%2720%27%20r=%2730%27/%3E%3Ccircle%20cx=%2740%27%20cy=%2720%27%20r=%2722%27/%3E%3Ccircle%20cx=%2740%27%20cy=%2720%27%20r=%2714%27/%3E%3Ccircle%20cx=%2740%27%20cy=%2720%27%20r=%276%27/%3E%3Ccircle%20cx=%270%27%20cy=%2740%27%20r=%2738%27/%3E%3Ccircle%20cx=%270%27%20cy=%2740%27%20r=%2730%27/%3E%3Ccircle%20cx=%270%27%20cy=%2740%27%20r=%2722%27/%3E%3Ccircle%20cx=%270%27%20cy=%2740%27%20r=%2714%27/%3E%3Ccircle%20cx=%270%27%20cy=%2740%27%20r=%276%27/%3E%3Ccircle%20cx=%2780%27%20cy=%2740%27%20r=%2738%27/%3E%3Ccircle%20cx=%2780%27%20cy=%2740%27%20r=%2730%27/%3E%3Ccircle%20cx=%2780%27%20cy=%2740%27%20r=%2722%27/%3E%3Ccircle%20cx=%2780%27%20cy=%2740%27%20r=%2714%27/%3E%3Ccircle%20cx=%2780%27%20cy=%2740%27%20r=%276%27/%3E%3Ccircle%20cx=%2740%27%20cy=%2760%27%20r=%2738%27/%3E%3Ccircle%20cx=%2740%27%20cy=%2760%27%20r=%2730%27/%3E%3Ccircle%20cx=%2740%27%20cy=%2760%27%20r=%2722%27/%3E%3Ccircle%20cx=%2740%27%20cy=%2760%27%20r=%2714%27/%3E%3Ccircle%20cx=%2740%27%20cy=%2760%27%20r=%276%27/%3E%3C/g%3E%3C/svg%3E");
+  background-size: clamp(64px, 7vw, 104px) auto;
+  -webkit-mask-image: linear-gradient(to top, #000 20%, transparent 95%);
+  mask-image: linear-gradient(to top, #000 20%, transparent 95%);
+}
+
+.hero-stack {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 1.6vh, 20px);
+}
+
+.hero-lock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 800;
+  font-size: min(22vw, calc(var(--hh) * 0.11));
+  line-height: 0.82;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.hero-word { display: flex; }
+.hero-word span { display: inline-block; animation: rise 0.9s var(--ease-out-strong) both; animation-delay: calc(var(--i) * 70ms); }
+
+.hero-tem { position: relative; z-index: 2; display: block; flex: none; margin: -1.5vw 0; }
+.hero-tem-in { display: block; animation: drop 1.1s var(--ease-out-strong) 0.3s both; }
+.hero-tem-img {
+  display: block;
+  flex: none;
+  max-width: none; /* evita que o preflight encolha a imagem a 0 */
+  width: auto;
+  height: min(calc(var(--hh) * 0.32), 64vw);
+  transform: rotate(var(--r0, 0deg));
+  filter: drop-shadow(0 28px 36px rgb(0 0 0 / 0.7));
+  transition: scale 350ms var(--ease-out-strong);
+}
+
+.hero-sub {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  font-size: clamp(1.375rem, 2.6vw, 2.5rem);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  animation: fade 0.9s ease-out 1s both;
+}
+.hanko {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  background: var(--color-shu);
+  color: #fff;
+  writing-mode: vertical-rl;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1;
+  rotate: -6deg;
+}
+
+@media (min-width: 768px) {
+  .hero-lock { flex-direction: row; gap: clamp(2px, 0.6vw, 10px); font-size: min(11vw, calc(var(--hh) * 0.25)); }
+  .hero-tem { margin: 0 -1vw; }
+  .hero-tem-img { height: min(calc(var(--hh) * 0.58), 34vw); }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hero-tem:hover .hero-tem-img { scale: 1.04; }
+}
+
+/* ---------- pratos flutuando ---------- */
+.dish {
+  position: absolute;
+  left: var(--dx);
+  top: var(--dy);
+  translate: -50% -50%;
+}
+.dish-in { display: block; animation: fade 0.9s ease-out calc(0.8s + var(--k) * 80ms) both; }
+.dish-scale { display: block; transition: transform 350ms var(--ease-out-strong); }
+.dish-img {
+  display: block;
+  height: auto;
+  max-width: none;
+  width: calc(var(--s) * var(--sz));
+  transform: rotate(var(--r0, 0deg));
+  filter: blur(var(--blur, 0px)) drop-shadow(0 16px 20px rgb(0 0 0 / 0.55));
+  transition: filter 350ms var(--ease-out-strong);
+}
+@media (max-width: 767px) {
+  .dish { left: var(--mx); top: var(--my); }
+  .dish-img { width: calc(var(--s) * var(--msz)); }
+}
+@media (hover: hover) and (pointer: fine) {
+  .dish:hover { z-index: 20 !important; }
+  .dish:hover .dish-scale { transform: scale(1.22); }
+  .dish:hover .dish-img { filter: blur(0px) drop-shadow(0 22px 28px rgb(0 0 0 / 0.6)); }
+}
+
+/* ---------- movimento ---------- */
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(calc(var(--r0, 0deg) - 4deg)); }
+  50% { transform: translateY(-5%) rotate(calc(var(--r0, 0deg) + 4deg)); }
+}
+@keyframes bob-t {
+  0%, 100% { transform: translateY(0) rotate(calc(var(--r0, 0deg) - 1.5deg)); }
+  50% { transform: translateY(-2%) rotate(calc(var(--r0, 0deg) + 1.5deg)); }
+}
+@keyframes rise { from { transform: translateY(60%); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes drop { from { transform: translateY(-14%) rotate(-10deg); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+.bob { animation: bob var(--t, 6s) ease-in-out var(--dl, 0s) infinite; }
+.bob-t { animation: bob-t 8s ease-in-out infinite; }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .bob, .bob-t, .hero-word span, .hero-tem-in, .hero-sub, .dish-in { animation: none; }
 }

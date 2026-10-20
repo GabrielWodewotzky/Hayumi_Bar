@@ -1,6 +1,6 @@
 export const site = {
-  name: "Kamado",
-  description: "Izakaya e omakase em São Paulo. Fogo, arroz e peixe.",
+  name: "Hayumi",
+  description: "Temaki bar em São Paulo. Montado na sua frente, um de cada vez.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   nav: [
     { label: "cardápio", href: "/cardapio" },

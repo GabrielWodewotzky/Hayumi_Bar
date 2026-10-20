@@ -1,25 +1,25 @@
 import type { Metadata, Viewport } from "next";
-import { Figtree, League_Spartan } from "next/font/google";
+import { Figtree, Shippori_Mincho_B1 } from "next/font/google";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { site } from "@/config/site";
 import "@/styles/globals.css";
 
-const spartan = League_Spartan({ subsets: ["latin"], weight: "700", variable: "--font-spartan" });
+const mincho = Shippori_Mincho_B1({ subsets: ["latin"], weight: ["600", "800"], variable: "--font-mincho" });
 const figtree = Figtree({ subsets: ["latin"], weight: ["400", "600"], variable: "--font-figtree" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: { default: `${site.name} — izakaya e omakase`, template: `%s · ${site.name}` },
+  title: { default: `${site.name} — sushi bar`, template: `%s · ${site.name}` },
   description: site.description,
   openGraph: { title: site.name, description: site.description, locale: "pt_BR", type: "website" },
 };
 
-export const viewport: Viewport = { themeColor: "#0e0c0b", viewportFit: "cover" };
+export const viewport: Viewport = { themeColor: "#0d0b0a", viewportFit: "cover" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${spartan.variable} ${figtree.variable}`}>
+    <html lang="pt-BR" className={`${mincho.variable} ${figtree.variable}`}>
       <body className="min-h-dvh font-sans antialiased">
         <Header />
         <main>{children}</main>
