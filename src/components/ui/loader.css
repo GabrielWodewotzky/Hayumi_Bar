@@ -1,0 +1,63 @@
+/* ---------- loader: ensō em movimento com o selo 寿司 ---------- */
+.loader {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: var(--size, 72px);
+  height: var(--size, 72px);
+}
+
+.loader-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.loader-arc {
+  fill: none;
+  stroke-linecap: round;
+  transform-origin: 50% 50%;
+}
+/* traço grosso, como pincelada */
+.loader-arc.a {
+  stroke: var(--color-shu);
+  stroke-width: 6;
+  stroke-dasharray: 190 74;
+  animation: loader-spin 1.5s linear infinite;
+}
+/* traço fino que gira ao contrário, dá textura de pincel */
+.loader-arc.b {
+  stroke: var(--color-washi);
+  stroke-opacity: 0.35;
+  stroke-width: 2.5;
+  stroke-dasharray: 90 175;
+  animation: loader-spin 2.4s linear infinite reverse;
+}
+
+.loader-seal {
+  display: grid;
+  place-items: center;
+  width: 46%;
+  height: 46%;
+  border-radius: 50%;
+  background: var(--color-shu);
+  color: #fff;
+  writing-mode: vertical-rl;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: calc(var(--size, 72px) * 0.2);
+  line-height: 1;
+  animation: loader-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes loader-spin { to { transform: rotate(360deg); } }
+@keyframes loader-pulse {
+  0%, 100% { scale: 1; }
+  50% { scale: 0.9; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader-arc, .loader-seal { animation: none; }
+}

@@ -1,3 +1,9 @@
+import { Loader } from "@/components/ui/loader";
+
 export default function Loading() {
-  return <div className="px-4 py-24 sm:px-8" aria-busy="true">carregando…</div>;
+  return (
+    <div className="grid min-h-[60dvh] place-items-center">
+      <Loader size={88} />
+    </div>
+  );
 }
