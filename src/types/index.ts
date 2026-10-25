@@ -1,14 +1,20 @@
-export type Dish = {
-  id: number;
-  categoryId: number;
+export type MenuItem = {
   name: string;
-  price: number;
   description?: string;
+  price?: number; // em reais; omitido enquanto não houver preço definido
 };
 
-export type Reservation = {
-  id: number;
+export type MenuCategory = {
+  id: string;
+  title: string;
+  intro?: string;
+  items: MenuItem[];
+};
+
+export type FeaturedDish = {
   name: string;
-  reservedFor: string;
-  partySize: number;
+  description: string;
+  src: string;
+  w: number;
+  h: number;
 };

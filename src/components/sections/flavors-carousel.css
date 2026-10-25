@@ -1,0 +1,166 @@
+/* ---------- carrossel de sabores ---------- */
+.fl-section {
+  background: var(--color-washi);
+  color: var(--color-sumi);
+  padding: clamp(56px, 9vw, 112px) 0 clamp(48px, 7vw, 88px);
+  overflow: hidden;
+}
+
+.fl-head { text-align: center; padding: 0 1rem; }
+.fl-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2rem, 5.5vw, 4.5rem);
+  line-height: 0.98;
+}
+.fl-pre { display: block; }
+.fl-name {
+  display: inline-block;
+  color: var(--color-shu);
+  animation: fl-name 520ms var(--ease-out-strong) both;
+}
+.fl-desc {
+  margin: 1rem auto 0;
+  max-width: 44ch;
+  min-height: 3em;
+  color: #4a413a;
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  animation: fl-fade 520ms ease-out both;
+}
+
+/* palco */
+.fl-stage {
+  --ih: clamp(300px, 56vh, 560px); /* altura do temaki central */
+  --step: calc(var(--ih) * 0.46); /* distância entre os sabores */
+  position: relative;
+  height: var(--ih);
+  margin-top: clamp(24px, 4vw, 48px);
+  touch-action: pan-y;
+  user-select: none;
+  outline: none;
+}
+.fl-stage:focus-visible { outline: 3px solid var(--color-shu); outline-offset: 8px; }
+
+.fl-item {
+  --sc: calc(1 - var(--abs) * 0.2);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: var(--ih);
+  width: max-content;
+  translate: -50% -50%;
+  transform: translateX(calc(var(--d) * var(--step))) scale(var(--sc));
+  rotate: calc(var(--d) * 2.5deg);
+  opacity: calc(1 - var(--abs) * 0.3);
+  z-index: calc(10 - var(--abs));
+  transition: transform 650ms var(--ease-out-strong), rotate 650ms var(--ease-out-strong), opacity 450ms ease;
+}
+.fl-item[data-abs="3"], .fl-item[data-abs="4"] { opacity: 0; pointer-events: none; }
+
+.fl-btn {
+  display: block;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.fl-item[data-active="true"] .fl-btn { cursor: default; }
+
+.fl-img {
+  display: block;
+  width: auto;
+  height: 100%;
+  max-width: none;
+  filter: drop-shadow(0 26px 28px rgb(40 24 12 / 0.28));
+  pointer-events: none;
+}
+.fl-item[data-active="true"] .fl-img { animation: fl-bob 6s ease-in-out infinite; }
+
+@media (hover: hover) and (pointer: fine) {
+  .fl-item[data-active="false"]:hover { --sc: calc(1 - var(--abs) * 0.2 + 0.05); }
+}
+
+/* ingredientes flutuando */
+.fl-float {
+  position: absolute;
+  z-index: 20;
+  translate: -50% -50%;
+  pointer-events: none;
+  animation: fl-pop 600ms var(--ease-out-strong) both;
+}
+.fl-float img {
+  display: block;
+  width: auto;
+  max-width: none;
+  height: calc(var(--ih) * var(--fs));
+  rotate: var(--fr);
+  filter: drop-shadow(0 14px 16px rgb(40 24 12 / 0.25));
+  animation: fl-bob 5s ease-in-out infinite;
+}
+
+/* controles */
+.fl-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 2vw, 20px);
+  margin-top: clamp(20px, 3vw, 36px);
+}
+.fl-arrow {
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border: 2px solid var(--color-sumi);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-sumi);
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease, transform 160ms var(--ease-out-strong);
+}
+.fl-arrow:active { transform: scale(0.94); }
+@media (hover: hover) and (pointer: fine) {
+  .fl-arrow:hover { background: var(--color-sumi); color: var(--color-washi); }
+}
+.fl-arrow svg { width: 1.25rem; height: 1.25rem; }
+
+.fl-dots { display: flex; }
+.fl-dot {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.fl-dot::before {
+  content: "";
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background: rgb(13 11 10 / 0.25);
+  transition: background-color 200ms ease, scale 200ms var(--ease-out-strong);
+}
+.fl-dot[aria-current="true"]::before { background: var(--color-shu); scale: 1.5; }
+
+.fl-cta { display: flex; justify-content: center; margin-top: clamp(16px, 2.5vw, 28px); }
+
+@media (max-width: 640px) {
+  .fl-stage { --ih: clamp(280px, 46vh, 420px); --step: calc(var(--ih) * 0.5); }
+  .fl-item[data-abs="2"] { opacity: 0; pointer-events: none; }
+  .fl-dot { width: 1.75rem; }
+}
+
+@keyframes fl-name { from { opacity: 0; transform: translateY(40%); } to { opacity: 1; transform: none; } }
+@keyframes fl-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fl-bob { 50% { transform: translateY(-1.5%); } }
+@keyframes fl-pop { from { opacity: 0; scale: 0.6; } to { opacity: 1; scale: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .fl-item { transition: none; }
+  .fl-name, .fl-desc, .fl-float { animation: none; }
+  .fl-item[data-active="true"] .fl-img, .fl-float img { animation: none; }
+}
