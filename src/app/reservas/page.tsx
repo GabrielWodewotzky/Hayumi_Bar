@@ -1,11 +1,17 @@
-import type { Metadata } from "next";
+import { AboutTeaser } from "@/components/sections/about-teaser";
+import { FlavorsCarousel } from "@/components/sections/flavors-carousel";
+import { HeroHayumi } from "@/components/sections/hero-hayumi";
+import { Visit } from "@/components/sections/visit";
+import { JsonLd } from "@/components/seo/json-ld";
 
-export const metadata: Metadata = { title: "Reservas" };
-
-export default function Page() {
+export default function HomePage() {
   return (
-    <section className="px-4 py-24 sm:px-8">
-      <h1 className="font-display text-6xl tracking-tighter">Reservas</h1>
-    </section>
+    <>
+      <JsonLd />
+      <HeroHayumi />
+      <FlavorsCarousel />
+      <AboutTeaser />
+      <Visit />
+    </>
   );
 }

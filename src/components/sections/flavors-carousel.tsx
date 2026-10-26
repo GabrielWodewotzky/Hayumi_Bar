@@ -4,12 +4,13 @@ import { useRef, useState } from "react";
 import type { CSSProperties, KeyboardEvent, PointerEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { CounterScene } from "@/components/sections/counter-scene";
 import { flavors } from "@/config/flavors";
-// @ts-expect-error CSS side-effect imports are handled by the app bundler.
 import "./flavors-carousel.css";
 
 const N = flavors.length;
 const wrap = (i: number) => ((i % N) + N) % N;
+const brl = (v: number) => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 0 });
 
 // distância assinada, circular, de um sabor até o ativo
 function dist(i: number, active: number) {
@@ -54,106 +55,139 @@ export function FlavorsCarousel() {
   };
 
   return (
-    <section className="fl-section" aria-roledescription="carrossel" aria-label="Sabores de temaki">
-      <div className="fl-head">
-        <h2 className="fl-title" aria-live="polite">
-          <span className="fl-pre">Eu me rendo ao</span>
-          <span key={current.slug} className="fl-name">
-            {current.name}
-          </span>
-        </h2>
-        <p key={`${current.slug}-d`} className="fl-desc">
-          {current.description}
-        </p>
+    <section
+      className="fl-section"
+      aria-roledescription="carrossel"
+      aria-label="Sabores de temaki"
+      style={{ "--tone": current.tone } as CSSProperties}
+    >
+      <div className="fl-top">
+        <CounterScene />
+
+        <div className="fl-head">
+          <h2 className="fl-title" aria-live="polite">
+            <span className="fl-pre">Eu me rendo ao</span>
+            <span key={current.slug} className="fl-name">
+              {current.name}
+            </span>
+          </h2>
+          <p key={`${current.slug}-d`} className="fl-desc">
+            {current.description}
+          </p>
+        </div>
+
+        <div
+          className="fl-stage"
+          tabIndex={0}
+          aria-label="Use as setas do teclado para trocar de sabor"
+          onKeyDown={onKeyDown}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={() => (start.current = null)}
+        >
+          <div className="fl-spot" aria-hidden />
+
+          {flavors.map((f, i) => {
+            const d = dist(i, active);
+            const abs = Math.abs(d);
+            const isActive = d === 0;
+            return (
+              <div
+                key={f.slug}
+                className="fl-item"
+                data-abs={abs}
+                data-active={isActive}
+                style={{ "--d": d, "--abs": Math.min(abs, 3) } as CSSProperties}
+              >
+                <button
+                  type="button"
+                  className="fl-btn"
+                  aria-label={isActive ? `${f.name}, ${brl(f.price)}, selecionado` : `Ver ${f.name}, ${brl(f.price)}`}
+                  aria-current={isActive}
+                  tabIndex={isActive ? -1 : 0}
+                  onClick={() => {
+                    if (!moved.current) setActive(i);
+                  }}
+                >
+                  <Image
+                    src={f.src}
+                    alt={isActive ? `Temaki ${f.name}` : ""}
+                    width={f.w}
+                    height={f.h}
+                    priority={i === 0}
+                    sizes="(max-width: 640px) 40vw, 24vw"
+                    className="fl-img"
+                    draggable={false}
+                  />
+                </button>
+              </div>
+            );
+          })}
+
+          {/* ingredientes do sabor flutuando (entram quando houver as imagens) */}
+          {current.floaters?.map((g, k) => (
+            <span
+              key={`${current.slug}-${k}`}
+              className="fl-float"
+              style={{ left: `${g.x}%`, top: `${g.y}%`, "--fs": g.size, "--fr": `${g.rot}deg` } as CSSProperties}
+            >
+              <Image src={g.src} alt="" aria-hidden width={g.w} height={g.h} sizes="20vw" />
+            </span>
+          ))}
+        </div>
       </div>
 
-      <div
-        className="fl-stage"
-        tabIndex={0}
-        aria-label="Use as setas do teclado para trocar de sabor"
-        onKeyDown={onKeyDown}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onPointerCancel={() => (start.current = null)}
-      >
+      {/* balcão de madeira com o preço de cada sabor */}
+      <div className="fl-plank" aria-hidden>
         {flavors.map((f, i) => {
           const d = dist(i, active);
           const abs = Math.abs(d);
-          const isActive = d === 0;
           return (
-            <div
+            <span
               key={f.slug}
-              className="fl-item"
+              className="fl-tag"
               data-abs={abs}
-              data-active={isActive}
+              data-active={d === 0}
               style={{ "--d": d, "--abs": Math.min(abs, 3) } as CSSProperties}
             >
-              <button
-                type="button"
-                className="fl-btn"
-                aria-label={isActive ? `${f.name}, selecionado` : `Ver ${f.name}`}
-                aria-current={isActive}
-                tabIndex={isActive ? -1 : 0}
-                onClick={() => {
-                  if (!moved.current) setActive(i);
-                }}
-              >
-                <Image
-                  src={f.src}
-                  alt={isActive ? `Temaki ${f.name}` : ""}
-                  width={f.w}
-                  height={f.h}
-                  priority={i === 0}
-                  sizes="(max-width: 640px) 40vw, 24vw"
-                  className="fl-img"
-                  draggable={false}
-                />
-              </button>
-            </div>
+              {brl(f.price)}
+            </span>
           );
         })}
-
-        {/* ingredientes do sabor flutuando (entram quando houver as imagens) */}
-        {current.floaters?.map((g, k) => (
-          <span
-            key={`${current.slug}-${k}`}
-            className="fl-float"
-            style={{ left: `${g.x}%`, top: `${g.y}%`, "--fs": g.size, "--fr": `${g.rot}deg` } as CSSProperties}
-          >
-            <Image src={g.src} alt="" aria-hidden width={g.w} height={g.h} sizes="20vw" />
-          </span>
-        ))}
       </div>
 
-      <div className="fl-controls">
-        <button type="button" className="fl-arrow" aria-label="Sabor anterior" onClick={() => go(-1)}>
-          <Arrow dir="prev" />
-        </button>
-        <div className="fl-dots">
-          {flavors.map((f, i) => (
-            <button
-              key={f.slug}
-              type="button"
-              className="fl-dot"
-              aria-label={f.name}
-              aria-current={i === active}
-              onClick={() => setActive(i)}
-            />
-          ))}
+      <div className="fl-front">
+        <div className="fl-controls">
+          <button type="button" className="fl-arrow" aria-label="Sabor anterior" onClick={() => go(-1)}>
+            <Arrow dir="prev" />
+          </button>
+          <div className="fl-dots">
+            {flavors.map((f, i) => (
+              <button
+                key={f.slug}
+                type="button"
+                className="fl-dot"
+                aria-label={f.name}
+                aria-current={i === active}
+                onClick={() => setActive(i)}
+              />
+            ))}
+          </div>
+          <button type="button" className="fl-arrow" aria-label="Próximo sabor" onClick={() => go(1)}>
+            <Arrow dir="next" />
+          </button>
         </div>
-        <button type="button" className="fl-arrow" aria-label="Próximo sabor" onClick={() => go(1)}>
-          <Arrow dir="next" />
-        </button>
-      </div>
 
-      <div className="fl-cta">
-        <Link
-          href="/cardapio"
-          className="inline-block rounded-full bg-shu px-8 py-4 font-semibold text-white transition-transform duration-150 ease-out-strong active:scale-[0.97]"
-        >
-          Ver cardápio completo
-        </Link>
+        <div className="fl-cta">
+          <Link
+            href="/cardapio"
+            className="inline-block rounded-full bg-shu px-8 py-4 font-semibold text-white transition-transform duration-150 ease-out-strong active:scale-[0.97]"
+          >
+            Ver cardápio completo
+          </Link>
+        </div>
+        <p className="fl-note">Valores aproximados.</p>
       </div>
     </section>
   );

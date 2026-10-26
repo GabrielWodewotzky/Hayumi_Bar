@@ -6,7 +6,7 @@ export const menu: MenuCategory[] = [
     id: "temakis",
     title: "Temakis",
     intro: "Montados na hora, com nori crocante e arroz ainda morno.",
-    items: flavors.map((f) => ({ name: `Temaki ${f.name}`, description: f.description })),
+    items: flavors.map((f) => ({ name: `Temaki ${f.name}`, description: f.description, price: f.price })),
   },
   {
     id: "sushis",
